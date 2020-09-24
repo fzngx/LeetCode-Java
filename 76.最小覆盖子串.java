@@ -10,23 +10,25 @@ class Solution {
         int left = 0, right = 0;
         int valid = 0;
         int start = 0, len = Integer.MAX_VALUE;
-        Map<Character, Integer> window = new HashMap<>();
-        Map<Character, Integer> need = new HashMap<>();
+        int[] need = new int[128];
+        int[] window = new int[128];
 
+        int unique = 0;
         for (char c: t.toCharArray()) {
-            need.put(c, need.getOrDefault(c, 0) + 1);
+            if (need[c] == 0) unique++;
+            need[c]++;
         }
 
         while (right < s.length()) {
             char c = s.charAt(right);
             right++;
 
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c) == (int)need.get(c)) valid++;
+            if (need[c] > 0) {
+                window[c]++;
+                if (window[c] == need[c]) valid++;
             }
 
-            while (valid == need.size()) {
+            while (valid == unique) {
                 if (right - left < len) {
                     len = right -left;
                     start = left;
@@ -34,9 +36,9 @@ class Solution {
 
                 char ch = s.charAt(left);
                 left++;
-                if (need.containsKey(ch) ) {
-                    if ((int)window.get(ch) == need.get(ch)) valid--;
-                    window.put(ch, window.get(ch) - 1);
+                if (need[ch] > 0) {
+                    if (window[ch] == need[ch]) valid--;
+                    window[ch]--;
                 }
             }
         }

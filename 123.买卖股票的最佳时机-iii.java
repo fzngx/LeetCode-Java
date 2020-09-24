@@ -7,30 +7,16 @@
 // @lc code=start
 class Solution {
     public int maxProfit(int[] prices) {
-        boolean buy = false;
-        int priceBought = 0;
-        int profitA = 0;
-        int profitB = 0;
-        for (int i = 0; i < prices.length - 1; i++) {
-
-            if (prices[i] < prices[i + 1]) {
-                priceBought = prices[i];
-                buy = true;
-            }
-            while (buy && i+1 < prices.length && prices[i+1] >= prices[i]) i++;
-
-            if (buy) {
-                int profit = prices[i] - priceBought;
-                if (profit > profitB) profitB = profit;
-                if (profitB > profitA) {
-                    int temp = profitA;
-                    profitA = profitB;
-                    profitB = temp;
-                }
-                buy = false;
-            }
+        if (prices == null || prices.length == 0) return 0;
+        int dp_1_0 = 0, dp_2_0 = 0;
+        int dp_1_1 = -prices[0], dp_2_1 = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dp_2_0 = Math.max(dp_2_0, dp_2_1 + prices[i]);
+            dp_2_1 = Math.max(dp_2_1, dp_1_0 -prices[i]);
+            dp_1_0 = Math.max(dp_1_0, dp_1_1 + prices[i]);
+            dp_1_1 = Math.max(dp_1_1, -prices[i]);
         }
-        return profitA + profitB;
+        return dp_2_0;
     }
 }
 // @lc code=end

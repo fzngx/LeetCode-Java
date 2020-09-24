@@ -6,15 +6,13 @@
 
 // @lc code=start
 class Solution {
-    public int maxProfit(int[] prices) {
-        if (prices == null || prices.length <= 1) return 0;
-        int min = prices[0];
-        int res = 0;
-        for (int i = 1; i < prices.length; i++) {
-            res = Math.max(res, prices[i] - min);
-            min = Math.min(min, prices[i]);
+    public static int maxProfit(int[] prices) {
+        int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+            dp_i_1 = Math.max(dp_i_1, -prices[i]);
         }
-        return res;
+        return dp_i_0;
     }
 }
 // @lc code=end

@@ -38,6 +38,7 @@ class Solution {
     }*/
 
     // Time Complexity: O(N)
+    /*
     public int lengthOfLongestSubstring(String s) {
         int ans = 0;
         
@@ -56,6 +57,35 @@ class Solution {
             ++j;
         }
         return ans;
+    } */
+    
+    public static int lengthOfLongestSubstring(String s) {
+        int maxLen = 0;
+        int left = 0, right = 0;
+        int[] window = new int[128];
+
+        while (right < s.length()) {
+            while (right < s.length()) {
+                char c1 = s.charAt(right);
+                window[c1]++;
+                right++;
+                if (window[c1] == 2) break;
+            }
+            if (right == s.length() && window[s.charAt(s.length() - 1)] == 1) {
+                maxLen = Math.max(right - left, maxLen);
+            } else {
+                maxLen = Math.max(right - left -1 , maxLen);
+            }
+            if (right == s.length()) break;
+
+            while (left < right) {
+                int c2 = s.charAt(left);
+                window[c2]--;
+                left++;
+                if (window[c2] == 1) break;
+            }
+        }
+        return maxLen;
     }
 }
 // @lc code=end
